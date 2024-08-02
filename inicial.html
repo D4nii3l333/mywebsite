@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redes Sociais</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            width: 100%;
+        }
+
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Redes Sociais</h1>
+            <button
+                onclick="window.location.href='file:C:/Users/Sr.Matheus/Documents/projeto_milhonario/page.html'">YOUTUBE</button>
+            <button onclick="showDescription('instagram')">INSTAGRAM</button>
+            <button onclick="showDescription('tiktok')">TIKTOK</button>
+            <button
+                onclick="window.location.href='file:C:/Users/Sr.Matheus/Documents/projeto_milhonario/page_img.html'">GALERIA</button>
+        </div>
+    </div>
+
+    <script>
+        function showDescription(platform) {
+            let description = '';
+
+            switch (platform) {
+                case 'instagram':
+                    description = 'Instagram é uma plataforma de mídia social para compartilhar fotos e vídeos.';
+                    break;
+                case 'tiktok':
+                    description = 'TikTok é um aplicativo de mídia social para criar e compartilhar vídeos curtos.';
+                    break;
+                default:
+                    description = '';
+            }
+
+            alert(description);
+        }
+    </script>
+</body>
+
+</html>

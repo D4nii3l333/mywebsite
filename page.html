@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiltroVigilanteText</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            width: 100%;
+        }
+
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            resize: vertical;
+            max-height: 300px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .notification {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 15px;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 5px;
+            z-index: 1000;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        .notification .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .notification .close-btn:hover {
+            color: #ddd;
+        }
+
+        .info-section {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        .info-section h2 {
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+
+        .info-section p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .styled-link {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            color: white;
+            background-color: #4caf50;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .styled-link:hover {
+            background-color: #45a049;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-container {
+            overflow-y: auto;
+            max-height: 120px;
+            word-wrap: break-word;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 200px;
+            text-align: left;
+            overflow-y: auto;
+            max-height: 300px;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 5;
+            padding: 5px 0;
+        }
+
+        .highlight {
+            color: red;
+            font-weight: bold;
+        }
+
+        .back-button {
+            position: fixed;
+            /* Fixa o botão na tela */
+            top: 20px;
+            /* Distância do topo */
+            left: 20px;
+            /* Distância da esquerda */
+            z-index: 2000;
+            /* Prioridade de empilhamento alta */
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="C:\Users\Sr.Matheus\Documents\projeto_milhonario\inicial.html" class="back-button">Voltar para a Página
+        Inicial</a>
+
+    <div class="header">
+        <div class="container">
+            <h1>Valide seu Texto</h1>
+            <textarea id="texto" rows="10" placeholder="Digite seu texto aqui..."></textarea><br>
+            <button id="enviar">Enviar</button>
+            <div id="resultado" class="result-container"></div> <!-- Resultado formatado -->
+        </div>
+    </div>
+
+    <div id="notification" class="notification">
+        <span id="notification-message"></span>
+        <button class="close-btn">X</button>
+    </div>
+
+    <div class="info-section">
+        <h2>Valide sua Mídia</h2>
+        <p>
+            Nosso sistema utiliza uma inteligência artificial super avançada para detectar imagens, sons, palavras, objetos
+            e outros tipos de conteúdo impróprio na plataforma do YouTube. Isso garante que o conteúdo disponibilizado
+            esteja sempre de acordo com as diretrizes e políticas estabelecidas.
+        </p>
+        <input type="file" id="file-input" accept="image/*,audio/*,video/*" style="display: none;">
+        <label for="file-input" class="upload-btn">
+            <img src="icons/midia.png" alt="Upload" style="width: 30px; height: 30px;">
+            <span>Escolher Mídia</span>
+        </label>
+        <div id="file-name" style="margin-top: 10px;"></div>
+        <button id="upload-btn">Enviar</button>
+    </div>
+
+    <div class="info-section">
+        <h2>Para que propósito serve?</h2>
+        <p>
+            Este sistema foi criado para ajudar a garantir que o conteúdo inserido pelos usuários não contenha palavras
+            proibidas. É útil para plataformas e sistemas que precisam filtrar ou evitar o uso de certas palavras em
+            textos submetidos.
+            <br><br>
+            Ao validar seu texto aqui, você pode ter certeza de que ele está em conformidade com as diretrizes
+            estabelecidas. Se alguma palavra proibida for encontrada, você receberá uma notificação para ajustar seu
+            conteúdo conforme necessário.
+        </p>
+    </div>
+
+    <script src="palavras_proibidas.js"></script>
+    <script>
+        // Crie uma instância de Audio para tocar o som
+        const notificationSound = new Audio('sounds/click.m4a'); // Caminho relativo ao seu arquivo de som
+
+        let notificationInterval; // Variável para armazenar o intervalo das notificações
+        let notificationShowing = false; // Flag para controle de exibição
+
+        document.getElementById('enviar').addEventListener('click', function () {
+            const texto = document.getElementById('texto').value;
+            const resultadoElement = document.getElementById('resultado');
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notification-message');
+            let palavrasEncontradas = [];
+
+            palavrasProibidas.forEach(palavra => {
+                const regex = new RegExp(`\\b${palavra}\\b`, 'i');
+                if (regex.test(texto)) {
+                    palavrasEncontradas.push(palavra);
+                }
+            });
+
+            console.log(palavrasEncontradas);
+            console.log("Texto inserido:", texto);
+            console.log("Palavras proibidas:", palavrasProibidas);
+            console.log("Palavras encontradas:", palavrasEncontradas);
+
+            if (palavrasEncontradas.length > 0) {
+                resultadoElement.innerHTML = `A palavra(s) <span class="highlight">${palavrasEncontradas.join(', ')}</span> foi encontrada no seu texto e ela é proibida na plataforma.`;
+                resultadoElement.style.display = 'block';
+
+                const totalPalavras = palavrasEncontradas.length;
+                let start = 0;
+                const chunkSize = 10;
+                const interval = 1900;
+
+                function mostrarBloco() {
+                    if (notificationShowing) {
+                        clearInterval(notificationInterval); // Limpar intervalo se já estiver em andamento
+                    }
+
+                    if (start >= totalPalavras) {
+                        notification.classList.remove('show');
+                        notificationShowing = false;
+                        return;
+                    }
+
+                    const end = Math.min(start + chunkSize, totalPalavras);
+                    const palavrasBloco = palavrasEncontradas.slice(start, end);
+                    const mensagem = `A palavra(s) <span class="highlight">${palavrasBloco.join(', ')}</span> foi encontrada no seu texto e ela é proibida na plataforma.`;
+
+                    notificationMessage.innerHTML = mensagem;
+                    notification.classList.add('show');
+                    notificationSound.play();
+
+                    notificationShowing = true;
+
+                    notificationInterval = setInterval(() => {
+                        if (start >= totalPalavras) {
+                            clearInterval(notificationInterval); // Limpar intervalo ao finalizar
+                            notification.classList.remove('show');
+                            notificationShowing = false;
+                        } else {
+                            start += chunkSize;
+                            mostrarBloco();
+                        }
+                    }, interval);
+                }
+
+                mostrarBloco();
+            } else {
+                resultadoElement.innerHTML = "Tudo certinho, chefe!";
+                resultadoElement.style.display = 'block';
+                notification.classList.remove('show');
+            }
+        });
+
+        document.querySelector('.close-btn').addEventListener('click', function () {
+            clearInterval(notificationInterval);
+            document.getElementById('notification').classList.remove('show');
+            notificationShowing = false;
+        });
+
+        document.getElementById('file-input').addEventListener('change', function (event) {
+                const fileInput = event.target;
+                const fileNameElement = document.getElementById('file-name');
+
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    fileNameElement.textContent = `Arquivo selecionado: ${file.name}`;
+                } else {
+                    fileNameElement.textContent = '';
+                }
+            });
+
+            document.getElementById('upload-btn').addEventListener('click', function () {
+                const fileInput = document.getElementById('file-input');
+                if (fileInput.files.length > 0) {
+                    // Aqui você pode adicionar o código para processar o upload do arquivo
+                    alert('Arquivo enviado: ' + fileInput.files[0].name);
+                } else {
+                    alert('Nenhum arquivo selecionado.');
+                }
+            });
+
+    </script>
+</body>
+
+</html>
